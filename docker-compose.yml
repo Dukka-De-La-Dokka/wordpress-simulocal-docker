@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  db:
+    build:
+      context: ./docker/db
+      dockerfile: Dockerfile
+    volumes:
+      - type: volume
+        source: mysql
+        target: /var/lib/mysql
+    restart: always
+    env_file:
+      - ./.env
+
+  wordpress:
+    depends_on:
+      - db
+    build:
+      context: ./docker/wordpress
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: ./wordpress/html
+        target: /var/www/html
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - "8080:80"
+    user: "1000:1000"
+
+  phpmyadmin:
+    depends_on:
+      - db
+    build:
+      context: ./docker/phpmyadmin
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - "8888:80"
+
+volumes:
+  mysql:
