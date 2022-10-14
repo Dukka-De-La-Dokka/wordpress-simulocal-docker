@@ -1,5 +1,5 @@
 # First WordPress for you!
-No time and no motivation to study WordPress, but want to play with WordPress just for basic things.  
+No time and no motivation to search for any WordPress servers, but want to play with WordPress just for basic things instantly.  
 Then, this is the right place to start with.
 
 ## Preparation
@@ -11,7 +11,7 @@ Then, this is the right place to start with.
 2. Rename `.env.sample` to `.env`
 3. Delete the file `./wordpress/html/delete-this-file.txt` (not necessary though)
 4. You can go ahead this wordpress project without modifying anything in the .env file, but if you want to change any values including the database's table prefix, please modify .env file in the first place
-5. Up all containers from your project's root directory (where docker-compose.yml exists)
+5. Up all containers - execute command from your project's root directory (where docker-compose.yml exists)
 ```
 docker compose up -d
 ```
@@ -25,11 +25,27 @@ http://localhost:8080
     * Username : wp-user
     * Password : wp-user
     * Confirm Password : Check
-    * Your Email : hoge@hoge.com
+    * Your Email : hoge-at-example.com
     * Search engine visibility : Check
     * Login as 'wp-user' for password 'wp-user'
 8. If you want to change the default max file upload size, please replace .htaccess file with the one located at the wordpress folder (close wordpress browser prior to doing this action)
 9. Next time you login, you will be directed to the wordpress regular top page. If you need to go to the admin console panel, use this url instead `http://localhost:8080/wp-admin`
+
+## If you encountered REST API related Error (probably not necessary to do this action)
+* Please modify `./fix.sh` script file to fill out the container name, then execute the script  (make sure all containers are being up)
+```
+bash ./fix.sh
+```
+* If you did `docker compose down`, please execute the script again after `docker compose up -d`
+* Do not execute the script two consecutive times (if you did, please remove all containers and re-create)
+* [Reference URL](https://stackoverflow.com/questions/43743894/local-wordpress-env-with-docker-compose-curl-error-7-failed-to-connect-to-loc)
+
+## How to uninstall this wordpress project from your local machine
+* If you want to uninstall this docker project, please do not forget to remove docker volume as well
+```
+docker volume ls
+docker volume rm <project-name_mysql>
+```
 
 ## Version
 * Current release : v1.0
