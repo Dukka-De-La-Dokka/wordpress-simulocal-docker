@@ -28,8 +28,7 @@ http://localhost
     * Your Email : hoge-at-example.com
     * Search engine visibility : Check
     * Login as 'wp-user' for password 'wp-user'
-8. If you want to change the default max file upload size, please replace `.htaccess` file with the one located at the wordpress folder (close wordpress browser prior to doing this action)
-9. Next time you login, you will be directed to the wordpress regular top page. If you need to go to the admin console panel, use this url instead
+8. Next time you login, you will be directed to the wordpress regular top page. If you need to go to the admin console panel, use this url instead
 ```
 http://localhost/wp-admin
 ```
@@ -52,6 +51,16 @@ docker volume rm <project-name_mysql>
 
 ## Others
 * Wordpress container's user ID is currently set to 1000, this is for an easy access from your host machine. You may change this value to other numbers such as 2000 depending on your host machine's user ID. (But I am not sure if the IDs other than 1000 would work correctly....)
+* If you want to change the default max file upload size, please add the following parameters at the top of `.htaccess` file located at the wordpress's html root folder (close wordpress browser prior to doing this action)
+```
+php_value upload_max_filesize 512M
+php_value post_max_size 512M
+php_value memory_limit 512M
+php_value max_execution_time 300
+php_value max_input_time 300
+
+# BEGIN WordPress
+```
 
 ## Version
 * Current release : v1.5
