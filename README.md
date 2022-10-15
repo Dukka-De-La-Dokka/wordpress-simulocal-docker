@@ -51,7 +51,7 @@ docker volume rm <project-name_mysql>
 
 ## Others
 * Wordpress container's user ID is currently set to 1000, this is for an easy access from your host machine. You may change this value to other numbers such as 2000 depending on your host machine's user ID. (But I am not sure if the IDs other than 1000 would work correctly....)
-* If you want to change the default max file upload size, please add the following parameters at the top of `.htaccess` file located at the wordpress's html root folder (close wordpress browser prior to doing this action)
+* If you want to change the default max file upload size, please add the following php parameters before `# BEGIN WordPress` sentence in the `.htaccess` file located at the wordpress's html root folder (close wordpress browser prior to doing this action)
 ```
 php_value upload_max_filesize 512M
 php_value post_max_size 512M
@@ -60,6 +60,11 @@ php_value max_execution_time 300
 php_value max_input_time 300
 
 # BEGIN WordPress
+# The directives (lines) between "BEGIN WordPress" and "END WordPress" are
+# dynamically generated, and should only be modified via WordPress filters.
+# Any changes to the directives between these markers will be overwritten.
+
+# END WordPress
 ```
 
 ## Version
