@@ -27,7 +27,7 @@ services:
     env_file:
       - ./.env
     ports:
-      - "80:80"
+      - "${IP}:80:80"
     user: "1000:1000"
 
   phpmyadmin:
@@ -40,7 +40,7 @@ services:
     env_file:
       - ./.env
     ports:
-      - "8080:80"
+      - "${IP}:8080:80"
 
 volumes:
   mysql:
