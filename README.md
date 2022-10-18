@@ -69,7 +69,7 @@ http://<your_loopback_IP>:8080
     * Change to the desired IP address at IP
     * Remove two # at `WORDPRESS_WP_HOME` and `WORDPRESS_WP_SITEURL`
     * Set the desired IP address for the value of `WORDPRESS_WP_HOME` and `WORDPRESS_WP_SITEURL`
-2. Add the following definitions after `// ** Database settings - You can get this info from your web host ** //` line of the `./wordpress/html/wp-config.php` file (Do not care about the value 127.0.0.1 since this is only used if the values at `.env` file is set to empty)
+2. Add the following definitions after `// ** Database settings - You can get this info from your web host ** //` line of the target project's `./wordpress/html/wp-config.php` file (Do not care about the value 127.0.0.1 since this is only used if the values at `.env` file is set to empty)
 ```
 /** Host name for your WordPress */
 define( 'WP_HOME', getenv_docker('WORDPRESS_WP_HOME', 'http://127.0.0.1') );
