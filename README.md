@@ -13,7 +13,7 @@ To be brief,
 1. Download the source code of this docker project, unzip, and rename the root directory to your favorite project name: e.g. `myblog1_CTNR`
 2. Rename `.env.sample` to `.env`
 3. Delete the file `./wordpress/html/delete-this-file.txt` (not necessary though)
-4. Modify IP value of `.env` file to set the 'Local Loopback Address' so that the each multiple wordpress site can recognize themselfves correctly  (I would recommend that you should change TABLE_PREFIX value as well depending on the each wordpress site title)
+4. Modify the IP value of `.env` file to set the 'Local Loopback Address' so that the each multiple wordpress site can recognize themselfves correctly  (I would recommend that you should change TABLE_PREFIX value as well depending on the each wordpress site title)
 
 For the first wordpress site:
 ```
@@ -71,10 +71,10 @@ http://<your_loopback_IP>:8080
     * Set the desired IP address for the value of `WORDPRESS_WP_HOME` and `WORDPRESS_WP_SITEURL`
 2. Add the following definitions after `// ** Database settings - You can get this info from your web host ** //` line of the target project's `./wordpress/html/wp-config.php` file (Do not care about the value 127.0.0.1 since this is only used if the values at `.env` file is set to empty)
 ```
-/** Host name for your WordPress */
+/** The address where WordPress core files reside */
 define( 'WP_HOME', getenv_docker('WORDPRESS_WP_HOME', 'http://127.0.0.1') );
 
-/** Host url for your WordPress */
+/** The address for people to type in to reach WordPress */
 define( 'WP_SITEURL', getenv_docker('WORDPRESS_WP_SITEURL', 'http://127.0.0.1') );
 ```
 3. Reset all containers (unfortunately `docker compose restart` does not work somehow....)
