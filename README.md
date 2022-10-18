@@ -13,7 +13,7 @@ To be brief,
 1. Download the source code of this docker project, unzip, and rename the root directory to your favorite project name: e.g. `myblog1_CTNR`
 2. Rename `.env.sample` to `.env`
 3. Delete the file `./wordpress/html/delete-this-file.txt` (not necessary though)
-4. Modify `.env` file to set the 'Local Loopback Address' so that the each multiple wordpress site can recognize themselfves correctly  (I would recommend that you should change TABLE_PREFIX value as well depending on the each wordpress site title)
+4. Modify IP value of `.env` file to set the 'Local Loopback Address' so that the each multiple wordpress site can recognize themselfves correctly  (I would recommend that you should change TABLE_PREFIX value as well depending on the each wordpress site title)
 
 For the first wordpress site:
 ```
