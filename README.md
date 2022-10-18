@@ -13,7 +13,7 @@ To be brief,
 1. Download the source code of this docker project, unzip, and rename the root directory to your favorite project name: e.g. `myblog1_CTNR`
 2. Rename `.env.sample` to `.env`
 3. Delete the file `./wordpress/html/delete-this-file.txt` (not necessary though)
-4. Modify `.env` file to set the 'Local Loopback Address' so that the each multiple wordpress site can recognize themselfves correctly  (I would recommend that you should change TABLE_PREFIX value as well depending on the each IP address)
+4. Modify `.env` file to set the 'Local Loopback Address' so that the each multiple wordpress site can recognize themselfves correctly  (I would recommend that you should change TABLE_PREFIX value as well depending on the each wordpress site title)
 
 For the first wordpress site:
 ```
@@ -63,6 +63,21 @@ http://<your_loopback_IP>/wp-admin
 ```
 http://<your_loopback_IP>:8080
 ```
+
+## If you want to change the existing Loopback IP Address to another IP Address
+1. Please modify `.env` file of the target project
+    * Change to the desired IP address at IP
+    * Remove two # at `WORDPRESS_WP_HOME` and `WORDPRESS_WP_SITEURL`
+    * Set the desired IP address for the value of `WORDPRESS_WP_HOME` and `WORDPRESS_WP_SITEURL`
+2. Add the following defines after `// ** Database settings - You can get this info from your web host ** //` line of the `wp-config.php` file
+```
+/** Host name for your WordPress */
+define( 'WP_HOME', getenv_docker('WORDPRESS_WP_HOME', 'http://127.0.0.1') );
+
+/** Host url for your WordPress */
+define( 'WP_SITEURL', getenv_docker('WORDPRESS_WP_SITEURL', 'http://127.0.0.1') );
+```
+3. `docker compose restart` (if the newly set IP address gonna match the existing IP address of the another site, please change that IP address as well)
 
 ## How to uninstall this wordpress project from your local machine
 * If you want to uninstall this docker project, please do not forget to remove the data volume, along with removing containers (`docker compose down`) and images (`docker rmi <repository names>`)
