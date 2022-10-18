@@ -64,12 +64,12 @@ http://<your_loopback_IP>/wp-admin
 http://<your_loopback_IP>:8080
 ```
 
-## If you want to change the existing Loopback IP Address to another IP Address
+## If you want to change the existing Loopback IP Address to another IP Address afterwards
 1. Please modify `.env` file of the target project
     * Change to the desired IP address at IP
     * Remove two # at `WORDPRESS_WP_HOME` and `WORDPRESS_WP_SITEURL`
     * Set the desired IP address for the value of `WORDPRESS_WP_HOME` and `WORDPRESS_WP_SITEURL`
-2. Add the following defines after `// ** Database settings - You can get this info from your web host ** //` line of the `wp-config.php` file
+2. Add the following definitions after `// ** Database settings - You can get this info from your web host ** //` line of the `./wordpress/html/wp-config.php` file (Do not care about the value 127.0.0.1 since this is only used if the values at `.env` file is set to empty)
 ```
 /** Host name for your WordPress */
 define( 'WP_HOME', getenv_docker('WORDPRESS_WP_HOME', 'http://127.0.0.1') );
@@ -77,7 +77,15 @@ define( 'WP_HOME', getenv_docker('WORDPRESS_WP_HOME', 'http://127.0.0.1') );
 /** Host url for your WordPress */
 define( 'WP_SITEURL', getenv_docker('WORDPRESS_WP_SITEURL', 'http://127.0.0.1') );
 ```
-3. `docker compose restart` (if the newly set IP address gonna match the existing IP address of the another site, please change that IP address as well)
+3. Reset all containers (unfortunately `docker compose restart` does not work somehow....)
+```
+docker compose stop
+docker compose up -d
+(or)
+docker compose remove
+docker compose up -d
+```
+* If the newly set IP address gonna match the existing IP address of the another site, please change that IP address as well
 
 ## How to uninstall this wordpress project from your local machine
 * If you want to uninstall this docker project, please do not forget to remove the data volume, along with removing containers (`docker compose down`) and images (`docker rmi <repository names>`)
