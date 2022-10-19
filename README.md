@@ -64,12 +64,12 @@ http://<your_loopback_IP>/wp-admin
 http://<your_loopback_IP>:8080
 ```
 
-## If you want to change the existing Loopback IP Address to another IP Address afterwards
+## Change the existing Loopback IP Address to another IP Address afterwards (temporarily)
 1. Please modify `.env` file of the target project
-    * Change to the desired IP address at IP
+    * Change to the desired loopback address at IP
     * Remove two # at `WORDPRESS_WP_HOME` and `WORDPRESS_WP_SITEURL`
-    * Set the desired IP address for the value of `WORDPRESS_WP_HOME` and `WORDPRESS_WP_SITEURL`
-2. Add the following definitions after `// ** Database settings - You can get this info from your web host ** //` line of the target project's `./wordpress/html/wp-config.php` file (Do not care about the value 127.0.0.1 since this is only used if the values at `.env` file is set to empty)
+    * Set the desired loopback address for the value of `WORDPRESS_WP_HOME` and `WORDPRESS_WP_SITEURL`
+2. Add the following definitions **right after**  `/* Add any custom values between this line and the "stop editing" line. */` line or **right before** `/* That's all, stop editing! Happy publishing. */` line of the target project's `./wordpress/html/wp-config.php` file (Do not care about the value 127.0.0.1 since this is only used if the values at `.env` file is set to empty)
 ```
 /** The address where WordPress core files reside */
 define( 'WP_HOME', getenv_docker('WORDPRESS_WP_HOME', 'http://127.0.0.1') );
@@ -85,7 +85,51 @@ docker compose up -d
 docker compose remove
 docker compose up -d
 ```
-* If the newly set IP address gonna match the existing IP address of the another site, please change that IP address as well
+* If the newly set loopback address gonna match the existing loopback address of the another site, please change that address as well
+
+## Change the existing Loopback IP Address to another IP Address afterwards (permanently method 1)
+1. Change to the desired loopback address at IP with `.env` file of the target project
+2. Make sure that the target project's containers are being up, and run the following command in order to change the database
+
+    * General command
+    ```
+    docker exec -i <db_container_name> mysql -u <user_name> -p<password> <database_name> -e "UPDATE <table_prefix>options SET option_value = 'http://<new_loopback_address>' WHERE option_name IN ('home', 'siteurl');"
+    ```
+
+    * Particular command
+    ```
+    docker exec -i myblog1-db-1 mysql -u local -plocal0000 wp_local_docker -e "UPDATE myblog1_options SET option_value = 'http://127.0.0.25' WHERE option_name IN ('home', 'siteurl');"
+    ```
+3. Reset all containers (unfortunately `docker compose restart` does not work somehow....)
+```
+docker compose stop
+docker compose up -d
+(or)
+docker compose remove
+docker compose up -d
+```
+
+## Change the existing Loopback IP Address to another IP Address afterwards (permanently method 2)
+1. Please modify `.env` file of the target project
+    * Change to the desired loopback address at IP
+    * Remove two # at `WORDPRESS_WP_HOME` and `WORDPRESS_WP_SITEURL`
+    * Set the desired loopback address for the value of `WORDPRESS_WP_HOME` and `WORDPRESS_WP_SITEURL`
+2. Add the following update commands **after**  `require_once ABSPATH . 'wp-settings.php';` line of the target project's `./wordpress/html/wp-config.php` file (Do not care about the value 127.0.0.1 since this is only used if the values at `.env` file is set to empty)
+```
+update_option( 'home', getenv_docker('WORDPRESS_WP_HOME', 'http://127.0.0.1') );
+update_option( 'siteurl', getenv_docker('WORDPRESS_WP_SITEURL', 'http://127.0.0.1') );
+```
+3. Reset all containers (unfortunately `docker compose restart` does not work somehow....)
+```
+docker compose stop
+docker compose up -d
+(or)
+docker compose remove
+docker compose up -d
+```
+4. Login with the new loopback address and go to the admin dashboard
+5. Remove update commands from the `wp-config.php` file
+6. Add two # at the beginning of `WORDPRESS_WP_HOME` and `WORDPRESS_WP_SITEURL` in the `.env` file
 
 ## How to uninstall this wordpress project from your local machine
 * If you want to uninstall this docker project, please do not forget to remove the data volume, along with removing containers (`docker compose down`) and images (`docker rmi <repository names>`)
@@ -106,7 +150,7 @@ php_value max_input_time 300
 ```
 
 ## Version
-* Current release : v1.0
+* Current release : v1.5
 * Dockerfile base image :
     * db container : `FROM mysql`
     * wordpress container : `FROM wordpress:php8.1-apache`
